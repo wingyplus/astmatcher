@@ -24,11 +24,13 @@ func findTests(src string) []string {
 func main() {
 	if len(os.Args) != 2 {
 		fmt.Fprintln(os.Stderr, "usage: findtest [file]")
+		os.Exit(1)
 	}
 
 	b, err := ioutil.ReadFile(os.Args[1])
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 
 	for _, fn := range findTests(string(b)) {
