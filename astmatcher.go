@@ -7,12 +7,7 @@ import (
 	"regexp"
 )
 
-var file *File
-
-type File struct {
-	file *ast.File
-	err  error
-}
+var file *ast.File
 
 type MatcherFunc func(*ast.FuncDecl) bool
 
@@ -30,7 +25,7 @@ func HasName(pattern string) MatcherFunc {
 func FuncDecl(matchers ...MatcherFunc) []*ast.FuncDecl {
 	fnDecls := []*ast.FuncDecl{}
 
-	for _, decl := range file.file.Decls {
+	for _, decl := range file.Decls {
 		switch fnDecl := decl.(type) {
 		case *ast.FuncDecl:
 			if match(fnDecl, matchers) {
@@ -48,10 +43,7 @@ func match(fnDecl *ast.FuncDecl, matchers []MatcherFunc) bool {
 
 func ParseSrc(src string) {
 	fset := token.NewFileSet()
-	f, err := parser.ParseFile(fset, "src.go", src, 0)
+	f, _ := parser.ParseFile(fset, "src.go", src, 0)
 
-	file = &File{
-		file: f,
-		err:  err,
-	}
+	file = f
 }
