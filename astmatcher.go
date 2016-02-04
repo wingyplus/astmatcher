@@ -43,7 +43,11 @@ func match(fnDecl *ast.FuncDecl, matchers []MatcherFunc) bool {
 
 func ParseSrc(src string) {
 	fset := token.NewFileSet()
-	f, _ := parser.ParseFile(fset, "src.go", src, 0)
+	f, err := parser.ParseFile(fset, "src.go", src, 0)
+
+	if err != nil {
+		panic(err)
+	}
 
 	file = f
 }
